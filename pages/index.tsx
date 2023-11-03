@@ -1,8 +1,18 @@
 import { Inter } from "next/font/google";
 
 const inter = Inter({ subsets: ["latin"] });
+import { useEffect } from "react";
+import useWebApp from "@/hooks/useWebApp";
 
-export default function Home() {
+function Home() {
+  const webApp = useWebApp();
+
+  useEffect(() => {
+    if (webApp) {
+      console.log("webApp", webApp);
+    }
+  }, [webApp]);
+
   return (
     <main
       className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
@@ -11,3 +21,5 @@ export default function Home() {
     </main>
   );
 }
+
+export default Home;
