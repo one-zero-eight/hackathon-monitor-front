@@ -18,6 +18,7 @@ function Home() {
       className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
     >
       <h1 className="text-center text-5xl font-bold">Hello ween</h1>
+
     </main>
   );
 }

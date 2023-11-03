@@ -6,6 +6,7 @@ const useWebApp = () => {
     const [webApp, setWebApp] = useState(null);
     useEffect(() => {
         const WebApp = window.Telegram.WebApp;
+        console.log(WebApp);
         setWebApp(WebApp);
     }, []);
 
