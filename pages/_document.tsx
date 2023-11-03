@@ -5,7 +5,8 @@ export default function Document() {
   return (
     <Html lang="ru">
       <Head>
-        <Script src="https://telegram.org/js/telegram-web-app.js" strategy="beforeInteractive" />
+        <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
       </Head>
       <body>
         <noscript className="flex w-full justify-center bg-red-700 p-8">
