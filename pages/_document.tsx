@@ -5,7 +5,7 @@ export default function Document() {
   return (
     <Html lang="ru">
       <Head>
-        <script src="https://telegram.org/js/telegram-web-app.js" async></script>
+        <script src="https://telegram.org/js/telegram-web-app.js" defer></script>
 
       </Head>
       <body>
