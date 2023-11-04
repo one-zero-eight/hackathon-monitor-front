@@ -1,20 +1,13 @@
-import React from 'react';
-import { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const ResizableTable = ({ offset, data }) => {
-
-    const [dataT, setDataT] = React.useState(data);
-
-    const columns = Object.keys(dataT[0]).map((key) => ({
-        id: key,
-        name: key,
-    }));
-
+    const [tableData, setTableData] = useState(data);
 
     useEffect(() => {
-        setDataT(data)
-    }, [data])
+        setTableData(data);
+    }, [data]);
 
+    const columns = tableData.length > 0 ? Object.keys(tableData[0]) : [];
 
     return (
         <div className="overflow-x-auto">
@@ -22,41 +15,33 @@ const ResizableTable = ({ offset, data }) => {
                 <thead>
                     <tr>
                         <th></th>
-                        {
-                            columns.map((column) => (
-                                <th key={column.id}>
-                                    {column.name}
-                                </th>
-                            ))
-                        }
+                        {columns.map((column) => (
+                            <th key={column}>
+                                {column}
+                            </th>
+                        ))}
                     </tr>
                 </thead>
                 <tbody>
-                    {
-                        dataT.map((row, index) => (
-                            <tr key={index}>
-                                <th>{offset * 10 + index + 1}</th>
-                                {
-                                    columns.map((column) => (
-                                        <td key={column.id}>
-                                            {row[column.id]}
-                                        </td>
-                                    ))
-                                }
-                            </tr>
-                        ))
-                    }
+                    {tableData.map((row, index) => (
+                        <tr key={index}>
+                            <th>{offset * 10 + index + 1}</th>
+                            {columns.map((column) => (
+                                <td key={column}>
+                                    {row[column]}
+                                </td>
+                            ))}
+                        </tr>
+                    ))}
                 </tbody>
                 <tfoot>
                     <tr>
                         <th></th>
-                        {
-                            columns.map((column) => (
-                                <th key={column.id}>
-                                    {column.name}
-                                </th>
-                            ))
-                        }
+                        {columns.map((column) => (
+                            <th key={column}>
+                                {column}
+                            </th>
+                        ))}
                     </tr>
                 </tfoot>
             </table>
