@@ -26,8 +26,9 @@ function Home() {
   useEffect(() => {
     if (webApp) {
       console.log(webApp);
-      webApp.MainButton.show();
-      webApp.MainButton.enable();
+      window.Telegram.WebApp.MainButton.show();
+      window.Telegram.WebApp.MainButton.setText("Показать график");
+      window.Telegram.WebApp.MainButton.enable();
     }
   }, [])
 
