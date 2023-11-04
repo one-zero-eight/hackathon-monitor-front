@@ -26,6 +26,7 @@ async function handler(req, res) {
             console.error(`Request failed with status ${resp.status}`);
             res.status(resp.status).json({ message: 'Error' });
         }
+
     } catch (e) {
         console.error(e);
         res.status(500).json({ message: 'Error' });
