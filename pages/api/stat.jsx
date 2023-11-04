@@ -3,7 +3,7 @@ async function handler(req, res) {
 
     // get request with Authorization
     try {
-        const resp = await fetch(`http://10.91.8.75:8000/pg/stat-${stat_name}?limit=${limit}&offset=${offset}`, {
+        const resp = await fetch(`https://62d6-188-130-155-146.ngrok-free.app/pg/stat-${stat_name}?limit=${limit}&offset=${offset}`, {
             method: 'GET',
             headers: {
                 'accept': 'application/json',
