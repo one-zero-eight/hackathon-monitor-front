@@ -1,9 +1,11 @@
 import ResizableTable from "@/components/gridTable";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import useTelegramInitData from "../../hooks/useTelegramInitData";
 
 function Page() {
   const router = useRouter();
+  const telegramInitData = useTelegramInitData();
   const [pageCount, setPageCount] = useState(1);
   const [stat_name, setStatName] = useState(null);
   const [target_alias, setTargetAlias] = useState(null);
@@ -24,9 +26,14 @@ function Page() {
     setLoading(true);
     try {
       const response = await fetch(
-        `/api/stat?stat_name=${stat_name}&&limit=${10}&offset=${
+        `/api/stat?stat_name=${stat_name}&limit=${10}&offset=${
           (pageCount - 1) * 10
         }&target_alias=${target_alias}`,
+        {
+          headers: {
+            Authorization: `Bearer ${telegramInitData}`,
+          },
+        },
       );
       if (response.ok) {
         const data = await response.json();

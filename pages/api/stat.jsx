@@ -1,10 +1,13 @@
 async function handler(req, res) {
   const { stat_name, limit, offset, target_alias } = req.query;
 
-  const authorizationToken = process.env.AUTH_TOKEN;
+  const authorization =
+    req.headers.Authorization || `Bearer ${process.env.AUTH_TOKEN}`;
 
-  if (!authorizationToken) {
-    return res.status(500).json({ message: "Authorization token is missing." });
+  if (!authorization) {
+    return res
+      .status(500)
+      .json({ message: "Authorization string is missing." });
   }
 
   try {
@@ -14,7 +17,7 @@ async function handler(req, res) {
       method: "GET",
       headers: {
         accept: "application/json",
-        Authorization: "Bearer " + authorizationToken,
+        Authorization: authorization,
       },
     });
 
