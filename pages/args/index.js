@@ -4,20 +4,17 @@ import useWebApp from '@/hooks/useWebApp'
 
 function Page() {
     const router = useRouter()
-    const { json } = router.query
+    const { args } = router.query
     const webApp = useWebApp();
-    let params = new URLSearchParams(json);
-    params = JSON.parse(params.get("params"))
-    const [data, setData] = useState({
-        "pid": {
-            "type": "number",
-            "description": "Идентификатор процесса"
-        },
-        "name": {
-            "type": "string",
-            "description": "Имя процесса"
-        },
-    })
+
+    const [inputs, setInputs] = useState({})
+    const [inputsValues, setInputsValues] = useState({})
+    useEffect(() => {
+        if (args) {
+            let lt = JSON.parse(decodeURIComponent(args))
+            setInputs(lt)
+        }
+    }, [args])
 
     useEffect(() => {
         window.Telegram.WebApp.MainButton.show();
@@ -25,22 +22,36 @@ function Page() {
         window.Telegram.WebApp.MainButton.enable();
         window.Telegram.WebApp.onEvent("mainButtonClicked", () => {
             window.Telegram.WebApp.MainButton.hide();
+            window.Telegram.WebApp.sendData(JSON.stringify(inputsValues))
+            window.Telegram.WebApp.close();
         })
     }, [])
 
+    function insertValue(key, value) {
+        setInputsValues({
+            ...inputsValues,
+            [key]: value
+        })
+    }
+
+    useEffect(() => {
+        console.log(inputsValues)
+    }, [inputsValues])
+
+
     return (
-        <div className='flex flex-col gap-5'>
+        <div className='flex flex-col gap-5 items-center'>
             {
-                data &&
-                Object.keys(data).map((item, index) => {
+                inputs &&
+                Object.keys(inputs).map((item, index) => {
                     return (
                         <div key={index} className="form-control w-full max-w-xs">
                             <label className="label">
                                 <span className="label-text">{item}</span>
                             </label>
-                            <input type="text" placeholder="Введите значение" className="mt-1 input input-bordered w-full max-w-xs" />
+                            <input type="text" placeholder="Введите значение" onChange={(e) => insertValue(item, e.target.value)} className="mt-1 input input-bordered w-full max-w-xs" />
                             <p className='mt-1 text-sm'>
-                                {data[item].description}
+                                {inputs[item].description}
                             </p>
                         </div>
                     )
