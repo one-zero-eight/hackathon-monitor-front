@@ -6,9 +6,7 @@ function Page() {
   const target = router.query.target;
   const [from, setFrom] = useState("now-1h");
   const [to, setTo] = useState("now");
-  const [url, setUrl] = useState(
-    `https://8315-89-23-107-14.ngrok-free.app/d/000000039/postgresql-database?orgId=1&refresh=5s&from=${from}&to=${to}&var-target=${target}&kiosk`,
-  );
+  const url = `https://8315-89-23-107-14.ngrok-free.app/d/000000039/postgresql-database?orgId=1&refresh=5s&from=${from}&to=${to}&var-target=${target}&kiosk`;
 
   return (
     <div className="h-screen">
