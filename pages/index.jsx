@@ -4,6 +4,7 @@ const inter = Inter({ subsets: ["latin"] });
 import { useEffect, useState } from "react";
 import useTelegramInitData from "@/hooks/useTelegramInitData";
 import useWebApp from "@/hooks/useWebApp";
+import Link from "next/link";
 
 // import { Datepicker } from 'flowbite-react';
 import DateRangePicker from 'rsuite/DateRangePicker';
@@ -24,12 +25,10 @@ function Home() {
   }, [webApp])
 
   useEffect(() => {
-    if (webApp) {
-      console.log(webApp);
-      window.Telegram.WebApp.MainButton.show();
-      window.Telegram.WebApp.MainButton.setText("Показать график");
-      window.Telegram.WebApp.MainButton.enable();
-    }
+    window.Telegram.WebApp.MainButton.show();
+    window.Telegram.WebApp.MainButton.setText("Показать график");
+    window.Telegram.WebApp.MainButton.enable();
+
   }, [])
 
   useEffect(() => {
@@ -70,7 +69,7 @@ function Home() {
         <PrometheusChart data={PrometheusData.data.result} />
       </div> */}
 
-
+      <Link href="/args">Link to args</Link>
 
     </main>
   );
