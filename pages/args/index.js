@@ -30,7 +30,7 @@ function Page() {
             ))
             window.Telegram.WebApp.close();
         })
-    }, [])
+    }, [actionId, inputsValues])
 
     function insertValue(key, value) {
         setInputsValues({
