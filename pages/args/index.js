@@ -42,6 +42,31 @@ function Page() {
             [key]: value
         })
     }
+    const chooseType = (type) => {
+        switch (type) {
+            case 'string':
+                return 'text'
+                break;
+            case 'int':
+                return 'number'
+                break;
+        }
+    }
+
+    const convertType = (type, value) => {
+        switch (type) {
+            case 'string':
+                return value
+                break;
+            case 'int':
+                return parseInt(value)
+                break;
+        }
+    }
+
+    useEffect(() => {
+        console.log(inputsValues)
+    }, [inputsValues])
 
     return (
         <div className='flex flex-col gap-5 items-center'>
@@ -53,7 +78,7 @@ function Page() {
                             <label className="label">
                                 <span className="label-text">{item}</span>
                             </label>
-                            <input type="text" placeholder="Введите значение" onChange={(e) => insertValue(item, e.target.value)} className="mt-1 input input-bordered w-full max-w-xs" />
+                            <input type={chooseType(inputs[item].type)} placeholder="Введите значение" onChange={(e) => insertValue(item, convertType(inputs[item].type, e.target.value))} className="mt-1 input input-bordered w-full max-w-xs" />
                             <p className='mt-1 text-sm'>
                                 {inputs[item].description}
                             </p>
