@@ -44,7 +44,7 @@ function Page() {
     }
     const chooseType = (type) => {
         switch (type) {
-            case 'string':
+            case 'str':
                 return 'text'
                 break;
             case 'int':
@@ -55,7 +55,7 @@ function Page() {
 
     const convertType = (type, value) => {
         switch (type) {
-            case 'string':
+            case 'str':
                 return value
                 break;
             case 'int':
