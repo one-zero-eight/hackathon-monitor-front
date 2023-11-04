@@ -4,7 +4,7 @@ import useWebApp from '@/hooks/useWebApp'
 
 function Page() {
     const router = useRouter()
-    const { args } = router.query
+    const { args, actionId } = router.query
     const webApp = useWebApp();
 
     const [inputs, setInputs] = useState({})
@@ -22,7 +22,12 @@ function Page() {
         window.Telegram.WebApp.MainButton.enable();
         window.Telegram.WebApp.onEvent("mainButtonClicked", () => {
             window.Telegram.WebApp.MainButton.hide();
-            window.Telegram.WebApp.sendData(JSON.stringify(inputsValues))
+            window.Telegram.WebApp.sendData(JSON.stringify(
+                {
+                    actionId: actionId,
+                    arguments: inputsValues
+                }
+            ))
             window.Telegram.WebApp.close();
         })
     }, [])
