@@ -19,11 +19,15 @@ function Page() {
         },
     })
 
-    function toggleVisibleMainButton() {
+    useEffect(() => {
         window.Telegram.WebApp.MainButton.show();
-        window.Telegram.WebApp.MainButton.setText("Показать график");
+        window.Telegram.WebApp.MainButton.setText("Отправить");
         window.Telegram.WebApp.MainButton.enable();
-    }
+        window.Telegram.WebApp.onEvent("mainButtonClicked", () => {
+            window.Telegram.WebApp.MainButton.hide();
+        })
+    }, [])
+
     return (
         <div className='flex flex-col gap-5'>
             {
@@ -42,7 +46,6 @@ function Page() {
                     )
                 })
             }
-            <button onClick={toggleVisibleMainButton} className="btn">Показать график</button>
         </div>
     )
 }

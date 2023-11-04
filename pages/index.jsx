@@ -25,13 +25,6 @@ function Home() {
   }, [webApp])
 
   useEffect(() => {
-    window.Telegram.WebApp.MainButton.show();
-    window.Telegram.WebApp.MainButton.setText("Показать график");
-    window.Telegram.WebApp.MainButton.enable();
-
-  }, [])
-
-  useEffect(() => {
     console.log(startDate)
   }, [startDate])
 
