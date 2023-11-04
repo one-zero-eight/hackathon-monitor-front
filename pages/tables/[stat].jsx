@@ -63,8 +63,8 @@ function Page() {
     return (
         <>
             <div>
-                <h1>{stat_name}</h1>
-                <div className="join grid grid-cols-2">
+                <h1 className="mt-2">{stat_name}</h1>
+                <div className="join grid grid-cols-2 mt-3 mb-3">
                     <button
                         onClick={decreasePageCount}
                         disabled={loading || pageCount === 1}

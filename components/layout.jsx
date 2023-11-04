@@ -1,6 +1,6 @@
 const Layout = ({ children }) => {
     return (
-        <div className=" min-h-screen">
+        <div data-theme="mytheme" className=" min-h-screen px-2">
             {children}
         </div>
     )
