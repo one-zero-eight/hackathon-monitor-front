@@ -6,7 +6,6 @@ export default function Document() {
     <Html lang="ru">
       <Head>
         <script src="https://telegram.org/js/telegram-web-app.js" defer></script>
-
       </Head>
       <body>
         <noscript className="flex w-full justify-center bg-red-700 p-8">
