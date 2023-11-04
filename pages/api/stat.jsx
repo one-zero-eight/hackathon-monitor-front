@@ -8,7 +8,7 @@ async function handler(req, res) {
     }
 
     try {
-        const apiUrl = `https://62d6-188-130-155-146.ngrok-free.app/pg/stat-${stat_name}?limit=${limit}&offset=${offset}`;
+        const apiUrl = `https://62d6-188-130-155-146.ngrok-free.app/views/execute/${stat_name}?limit=${limit}&offset=${offset}`;
 
         const resp = await fetch(apiUrl, {
             method: 'GET',
