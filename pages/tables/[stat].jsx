@@ -29,7 +29,7 @@ function Page() {
                 const data = await response.json();
                 setDataTable(data);
             } else {
-                // Handle error, e.g., display an error message to the user
+
                 console.error("Failed to fetch data");
             }
         } catch (error) {
