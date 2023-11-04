@@ -18,9 +18,9 @@ function Page() {
 
     useEffect(() => {
         window.Telegram.WebApp.MainButton.show();
-        window.Telegram.WebApp.MainButton.setText("Отправить");
+        window.Telegram.WebApp.MainButton.setText("Запустить");
         window.Telegram.WebApp.MainButton.enable();
-        window.Telegram.WebApp.onEvent("mainButtonClicked", () => {
+        const handleClick = () => {
             window.Telegram.WebApp.MainButton.hide();
             window.Telegram.WebApp.sendData(JSON.stringify(
                 {
@@ -29,9 +29,10 @@ function Page() {
                 }
             ))
             window.Telegram.WebApp.close();
-        })
+        }
+        window.Telegram.WebApp.onEvent("mainButtonClicked", handleClick)
         return () => {
-            window.Telegram.WebApp.offEvent("mainButtonClicked")
+            window.Telegram.WebApp.offEvent("mainButtonClicked", handleClick)
         }
     }, [actionId, inputsValues])
 
@@ -41,11 +42,6 @@ function Page() {
             [key]: value
         })
     }
-
-    useEffect(() => {
-        console.log(inputsValues)
-    }, [inputsValues])
-
 
     return (
         <div className='flex flex-col gap-5 items-center'>
