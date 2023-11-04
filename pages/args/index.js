@@ -30,6 +30,9 @@ function Page() {
             ))
             window.Telegram.WebApp.close();
         })
+        return () => {
+            window.Telegram.WebApp.offEvent("mainButtonClicked")
+        }
     }, [actionId, inputsValues])
 
     function insertValue(key, value) {
