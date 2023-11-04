@@ -49,7 +49,7 @@ function Page() {
             <div>
                 <h1>{stat_name}</h1>
                 <div className="join grid grid-cols-2">
-                    <button onClick={decreasePageCount} className="join-item btn btn-outline">Previous page</button>
+                    <button onClick={decreasePageCount} disabled={dataTable && pageCount == 1} className="join-item btn btn-outline">Previous page</button>
                     <button onClick={increasePageCount} disabled={dataTable && dataTable.length != 10} className="join-item btn btn-outline">Next</button>
                 </div>
                 {dataTable && <ResizableTable offset={pageCount - 1} data={dataTable} />}
