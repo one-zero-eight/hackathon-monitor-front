@@ -6,16 +6,17 @@ import useSWR from "swr";
 import useWebApp from "../../../hooks/useWebApp";
 
 function Page() {
-  const router = useRouter();
   const webApp = useWebApp();
+  const router = useRouter();
+  const { view, target } = router.query;
   const [page, setPage] = useState(1);
   const offset = (page - 1) * 10;
 
   const { data, error, isLoading } = useSWR(
     [
-      `${process.env.NEXT_PUBLIC_API_URL}/views/execute/${
-        router.query.view
-      }?target_alias=${router.query.target}&limit=${10}&offset=${offset}`,
+      `${
+        process.env.NEXT_PUBLIC_API_URL
+      }/views/execute/${view}?target_alias=${target}&limit=${10}&offset=${offset}`,
       webApp?.initData,
     ],
     ([url, auth]) => fetcher(url, auth),
@@ -23,8 +24,8 @@ function Page() {
 
   return (
     <div className="overflow-x-hidden">
-      <h1 className="mt-2 text-xs">База данных: {router.query.target}</h1>
-      <h1 className="mt-2 text-xs">Отображение: {router.query.view}</h1>
+      <h1 className="mt-2 text-xs">База данных: {target}</h1>
+      <h1 className="mt-2 text-xs">Отображение: {view}</h1>
       <div className="join mb-3 mt-3 grid grid-cols-2">
         <button
           onClick={() => {
