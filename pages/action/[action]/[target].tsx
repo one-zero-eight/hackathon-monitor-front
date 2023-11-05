@@ -67,10 +67,6 @@ function Page() {
     }
   };
 
-  useEffect(() => {
-    console.log(inputsValues);
-  }, [inputsValues]);
-
   return (
     <div className="space-y-5">
       {inputs &&
