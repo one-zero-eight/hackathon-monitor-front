@@ -1,51 +1,20 @@
+import fetcher from "@/hooks/fetcher";
+import useWebApp from "@/hooks/useWebApp";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import useSWR from "swr";
 
 function Page() {
+  const webApp = useWebApp();
   const router = useRouter();
-  const { args, actionId } = router.query;
+  const { action, target } = router.query;
+  const { data: actionData } = useSWR(
+    [`${process.env.NEXT_PUBLIC_API_URL}/actions/${action}`, webApp?.initData],
+    ([url, auth]) => fetcher(url, auth),
+  );
+  const [inputsValues, setInputsValues] = useState<{ [key: string]: any }>({});
 
-  const [inputs, setInputs] = useState({});
-  const [inputsValues, setInputsValues] = useState({});
-
-  useEffect(() => {
-    if (args) {
-      const decodedArgs = JSON.parse(decodeURIComponent(args));
-      setInputs(decodedArgs);
-    }
-  }, [args]);
-
-  useEffect(() => {
-    window.Telegram.WebApp.MainButton.show();
-    window.Telegram.WebApp.MainButton.setText("Запустить");
-    window.Telegram.WebApp.MainButton.enable();
-
-    const handleClick = () => {
-      window.Telegram.WebApp.MainButton.hide();
-      window.Telegram.WebApp.sendData(
-        JSON.stringify({
-          actionId: actionId,
-          arguments: inputsValues,
-        }),
-      );
-      window.Telegram.WebApp.close();
-    };
-
-    window.Telegram.WebApp.onEvent("mainButtonClicked", handleClick);
-
-    return () => {
-      window.Telegram.WebApp.offEvent("mainButtonClicked", handleClick);
-    };
-  }, [actionId, inputsValues]);
-
-  const insertValue = (key, value) => {
-    setInputsValues({
-      ...inputsValues,
-      [key]: value,
-    });
-  };
-
-  const chooseInputType = (type) => {
+  const chooseInputType = (type: string) => {
     switch (type) {
       case "str":
         return "text";
@@ -56,7 +25,7 @@ function Page() {
     }
   };
 
-  const convertInputValue = (type, value) => {
+  const convertInputValue = (type: string, value: string) => {
     switch (type) {
       case "str":
         return value;
@@ -67,28 +36,68 @@ function Page() {
     }
   };
 
+  const complete = async () => {
+    const data = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/actions/execute/${action}?target_alias=${target}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${
+            webApp?.initData || process.env.NEXT_PUBLIC_AUTH_STRING
+          }`,
+        },
+        body: JSON.stringify(inputsValues),
+      },
+    )
+      .then((res) => res.text())
+      .catch((e) => console.log(e));
+    console.log(data);
+    webApp?.showPopup({
+      title: "Запрос выполнен",
+      message: `Ответ сервера: ${data}`,
+      buttons: [{ text: "Закрыть", type: "close" }],
+    });
+  };
+
   return (
-    <div className="space-y-5">
-      {inputs &&
-        Object.keys(inputs).map((item, index) => (
-          <div key={index} className="space-y-2">
-            <label className="text-lg font-semibold text-gray-700">
-              {item}
-            </label>
-            <input
-              type={chooseInputType(inputs[item].type)}
-              placeholder="Введите значение"
-              onChange={(e) =>
-                insertValue(
-                  item,
-                  convertInputValue(inputs[item].type, e.target.value),
-                )
-              }
-              className="input input-bordered w-full"
-            />
-            <p className="text-sm text-gray-600">{inputs[item].description}</p>
-          </div>
-        ))}
+    <div>
+      <h1 className="mt-2 text-xl">База данных: {target}</h1>
+      {actionData === undefined ? (
+        <>Загрузка...</>
+      ) : (
+        <div className="space-y-2">
+          <h1 className="text-xl">Сценарий: {actionData.title}</h1>
+          <p className="">{actionData.description}</p>
+          {Object.entries(actionData.arguments).map(
+            ([key, item]: [string, any]) => (
+              <div key={key} className="space-y-2">
+                <label className="text-lg font-semibold text-gray-400">
+                  {key}{" "}
+                  <span className="text-sm text-gray-500">
+                    {item.description}
+                  </span>
+                </label>
+                <input
+                  value={inputsValues[item]}
+                  onChange={(e) =>
+                    setInputsValues((v) => ({
+                      ...v,
+                      [key]: convertInputValue(item.type, e.target.value),
+                    }))
+                  }
+                  type={chooseInputType(item.type)}
+                  placeholder="Введите значение"
+                  className="input input-bordered w-full"
+                />
+              </div>
+            ),
+          )}
+          <button onClick={complete} className="btn btn-primary">
+            Выполнить
+          </button>
+        </div>
+      )}
     </div>
   );
 }
