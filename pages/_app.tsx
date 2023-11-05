@@ -1,14 +1,13 @@
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
-import Layout from '@/components/layout'
-import 'rsuite/dist/rsuite.min.css';
+import "rsuite/dist/rsuite.min.css";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
-      <Layout>
+      <div data-theme="mytheme" className="min-h-screen px-2">
         <Component {...pageProps} />
-      </Layout>
+      </div>
     </>
   );
 }

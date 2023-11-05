@@ -1,6 +1,6 @@
 import React from "react";
 
-const ResizableTable = ({ offset, data }) => {
+const ResizableTable = ({ offset, data }: { offset: number; data: any[] }) => {
   const columns = data.length > 0 ? Object.keys(data[0]) : [];
 
   return (
