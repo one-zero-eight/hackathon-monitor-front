@@ -1,4 +1,5 @@
 import ResizableTable from "@/components/gridTable";
+import fetcher from "@/hooks/fetcher";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import useSWR from "swr";
@@ -8,32 +9,17 @@ function Page() {
   const router = useRouter();
   const webApp = useWebApp();
   const [page, setPage] = useState(1);
-  const auth = `Bearer ${
-    webApp?.initData || process.env.NEXT_PUBLIC_AUTH_STRING
-  }`;
+  const offset = (page - 1) * 10;
 
-  const {
-    data: swrData,
-    error,
-    isLoading,
-  } = useSWR(
+  const { data, error, isLoading } = useSWR(
     [
       `${process.env.NEXT_PUBLIC_API_URL}/views/execute/${
         router.query.view
-      }?target_alias=${router.query.target}&limit=${10}&offset=${
-        (page - 1) * 10
-      }`,
-      auth,
+      }?target_alias=${router.query.target}&limit=${10}&offset=${offset}`,
+      webApp?.initData,
     ],
-    ([url, auth]) =>
-      fetch(url, {
-        headers: {
-          Authorization: auth,
-        },
-      }).then((res) => res.json()),
+    ([url, auth]) => fetcher(url, auth),
   );
-
-  const data = !swrData || swrData.detail ? undefined : swrData;
 
   return (
     <div className="overflow-x-hidden">
