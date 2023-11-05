@@ -22,7 +22,9 @@ function Page() {
     (url) =>
       fetch(url, {
         headers: {
-          Authorization: `Bearer ${telegramInitData.initData}`,
+          Authorization: `Bearer ${
+            telegramInitData.initData || process.env.NEXT_PUBLIC_AUTH_STRING
+          }`,
         },
       }).then((res) => res.json()),
   );
