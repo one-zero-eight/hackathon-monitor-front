@@ -1,3 +1,4 @@
+import MainButton from "@/components/MainButton";
 import fetcher from "@/hooks/fetcher";
 import useWebApp from "@/hooks/useWebApp";
 import { useRouter } from "next/router";
@@ -51,13 +52,18 @@ function Page() {
       },
     )
       .then((res) => res.text())
-      .catch((e) => console.log(e));
+      .catch((e) => console.error(e));
     console.log(data);
-    webApp?.showPopup({
-      title: "Запрос выполнен",
-      message: `Ответ сервера: ${data}`,
-      buttons: [{ text: "Закрыть", type: "close" }],
-    });
+    if (webApp) {
+      webApp.showPopup({
+        title: "Запрос выполнен",
+        message: `Ответ сервера: ${data}`,
+        buttons: [{ text: "Закрыть", type: "close" }],
+      });
+      webApp.onEvent("popupClosed", () => {
+        webApp.close();
+      });
+    }
   };
 
   return (
@@ -93,9 +99,8 @@ function Page() {
               </div>
             ),
           )}
-          <button onClick={complete} className="btn btn-primary">
-            Выполнить
-          </button>
+
+          <MainButton text="Выполнить сценарий" onClick={complete} />
         </div>
       )}
     </div>
