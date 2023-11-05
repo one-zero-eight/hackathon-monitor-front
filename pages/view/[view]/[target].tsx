@@ -2,11 +2,11 @@ import ResizableTable from "@/components/gridTable";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import useSWR from "swr";
-import useTelegramInitData from "../../../hooks/useTelegramInitData";
+import useWebApp from "../../../hooks/useWebApp";
 
 function Page() {
   const router = useRouter();
-  const telegramInitData = useTelegramInitData();
+  const webApp = useWebApp();
   const [page, setPage] = useState(1);
 
   const {
@@ -19,11 +19,11 @@ function Page() {
     }?target_alias=${router.query.target}&limit=${10}&offset=${
       (page - 1) * 10
     }`,
-    (url) =>
+    (url: string) =>
       fetch(url, {
         headers: {
           Authorization: `Bearer ${
-            telegramInitData.initData || process.env.NEXT_PUBLIC_AUTH_STRING
+            webApp?.initData || process.env.NEXT_PUBLIC_AUTH_STRING
           }`,
         },
       }).then((res) => res.json()),
