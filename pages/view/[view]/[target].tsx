@@ -8,23 +8,27 @@ function Page() {
   const router = useRouter();
   const webApp = useWebApp();
   const [page, setPage] = useState(1);
+  const auth = `Bearer ${
+    webApp?.initData || process.env.NEXT_PUBLIC_AUTH_STRING
+  }`;
 
   const {
     data: swrData,
     error,
     isLoading,
   } = useSWR(
-    `${process.env.NEXT_PUBLIC_API_URL}/views/execute/${
-      router.query.view
-    }?target_alias=${router.query.target}&limit=${10}&offset=${
-      (page - 1) * 10
-    }`,
-    (url: string) =>
+    [
+      `${process.env.NEXT_PUBLIC_API_URL}/views/execute/${
+        router.query.view
+      }?target_alias=${router.query.target}&limit=${10}&offset=${
+        (page - 1) * 10
+      }`,
+      auth,
+    ],
+    ([url, auth]) =>
       fetch(url, {
         headers: {
-          Authorization: `Bearer ${
-            webApp?.initData || process.env.NEXT_PUBLIC_AUTH_STRING
-          }`,
+          Authorization: auth,
         },
       }).then((res) => res.json()),
   );
